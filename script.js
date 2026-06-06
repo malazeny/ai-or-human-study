@@ -75,6 +75,7 @@ let currentTrial = null;
 let selectedAI = null;
 let ratings = {};
 let selectedConf = null;
+let participantId = null;
 
 // ── DOM refs ──
 const screens = {
@@ -118,6 +119,7 @@ startBtn.addEventListener("click", () => {
   trials = buildTrials();
   currentIndex = 0;
   userAnswers = [];
+  participantId = Math.random().toString(36).slice(2, 10).toUpperCase();
   showTrial();
   showScreen("quiz");
 });
@@ -206,6 +208,7 @@ document.getElementById("submit-btn").addEventListener("click", () => {
   const correct = selectedAI === currentTrial.actualAI;
 
   const answer = {
+    participantId,
     timestamp: new Date().toISOString(),
     promptId: currentTrial.id,
     category: currentTrial.category,
@@ -237,6 +240,7 @@ document.getElementById("submit-btn").addEventListener("click", () => {
 function showResults() {
   const correctCount = userAnswers.filter(a => a.correct).length;
   const accuracy = Math.round((correctCount / userAnswers.length) * 100);
+
 
   document.getElementById("score-text").textContent =
     `You correctly identified the AI response ${correctCount} out of ${userAnswers.length} times.`;
